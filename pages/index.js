@@ -39,10 +39,10 @@ const Home = () => {
       <div className="container">
         <div className="header">
           <div className="header-title">
-            <h1>Analyse Failure Modes For Your Code</h1>
+            <h1>Let GPT3 create your AI pipeline</h1>
           </div>
           <div className="header-subtitle">
-            <h2>... and have GPT3 write unit tests for you!</h2>
+            <h2>... in your framework of choice!</h2>
           </div>
         </div>
         <div className="prompt-container">
@@ -53,9 +53,12 @@ const Home = () => {
             onChange={onUserChangedText}
           />
           <div className="prompt-buttons">
-            <a className="generate-button" onClick={callGenerateEndpoint}>
+            <a
+              className={isGenerating ? 'generate-button loading' : 'generate-button'}
+              onClick={callGenerateEndpoint}
+            >
               <div className="generate">
-                <p>Generate</p>
+              {isGenerating ? <span className="loader"></span> : <p>Generate</p>}
               </div>
             </a>
           </div>
