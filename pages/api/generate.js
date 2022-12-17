@@ -1,3 +1,11 @@
+import { Configuration, OpenAIApi } from 'openai';
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
 const basePromptPrefix =
 `
 Based on the best industry standards, the following is a numbered list of Neural Network layers to perform 
@@ -15,29 +23,27 @@ const generateAction = async (req, res) => {
   
   const basePromptOutput = baseCompletion.data.choices.pop();
 
-//   const secondPrompt = 
-//   `
-//   Based on the best industry standards, the following is a numbered list of Neural Network layers to perform ${req.body.userInput}.
+  const secondPrompt = 
+  `
+  Based on the best industry standards, the following is a numbered list of Neural Network layers to perform ${req.body.userInput}.
   
-//   ${basePromptOutput.text}
+  ${basePromptOutput.text}
 
-//   To implement the above model in Python using the PyTorch framework, the following uncommented code can be used:
-//   `
+  To implement the above model in Python using the PyTorch framework, the following uncommented code can be used:
+  `
   
-//   const secondPromptCompletion = await openai.createCompletion({
-//     model: 'code-cushman-001',
-//     prompt: `${secondPrompt}`,
-//     // I set a higher temperature for this one. Up to you!
-//     temperature: 0.3,
-// 		// I also increase max_tokens.
-//     max_tokens: 300,
-//   });
+  const secondPromptCompletion = await openai.createCompletion({
+    model: 'code-cushman-001',
+    prompt: `${secondPrompt}`,
+    temperature: 0.3,
+    max_tokens: 300,
+  });
   
-//   // Get the output
-//   const secondPromptOutput = secondPromptCompletion.data.choices.pop();
+  // Get the output
+  const secondPromptOutput = secondPromptCompletion.data.choices.pop();
 
   // Send over the Prompt #2's output to our UI instead of Prompt #1's.
-  res.status(200).json({ output: basePromptOutput });
+  res.status(200).json({ output: secondPromptOutput });
 };
 
 export default generateAction;
